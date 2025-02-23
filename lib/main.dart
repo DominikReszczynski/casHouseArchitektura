@@ -5,6 +5,7 @@ import 'package:cas_house/providers/shopping_list_provider.dart';
 import 'package:cas_house/providers/user_provider.dart';
 import 'package:cas_house/sections/expenses/expenses_main.dart';
 import 'package:cas_house/sections/dashboard/dashboard_main.dart';
+import 'package:cas_house/sections/login/login_main.dart';
 import 'package:cas_house/sections/shoppingList/shopping_list_main.dart';
 import 'package:cas_house/sections/user/user_main.dart';
 import 'package:provider/provider.dart';
@@ -29,9 +30,9 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
+    bool user = false;
     return ValueListenableBuilder<ThemeMode>(
         valueListenable: chosenMode,
         builder: (context, themeMode, _) {
@@ -40,41 +41,21 @@ class MyApp extends StatelessWidget {
             theme: ThemeData.light(),
             darkTheme: ThemeData.dark(),
             themeMode: themeMode,
-            home: Scaffold(body: HelloButton()),
+            home: Scaffold(body: user ? MainSections() : LoginSectionMain()),
           );
         });
   }
 }
 
-class HelloButton extends StatefulWidget {
-  const HelloButton({super.key});
+class MainSections extends StatefulWidget {
+  const MainSections({super.key});
 
   @override
-  _HelloButtonState createState() => _HelloButtonState();
+  _MainSectionsState createState() => _MainSectionsState();
 }
 
-class _HelloButtonState extends State<HelloButton> {
+class _MainSectionsState extends State<MainSections> {
   String message = "Press the button to fetch data";
-
-  Future<void> fetchMessage() async {
-    try {
-      final response = await http.get(Uri.parse('$apiUrl/api/hello'));
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        setState(() {
-          message = data['message'];
-        });
-      } else {
-        setState(() {
-          message = 'Error: ${response.statusCode}';
-        });
-      }
-    } catch (e) {
-      setState(() {
-        message = 'Error: $e';
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
