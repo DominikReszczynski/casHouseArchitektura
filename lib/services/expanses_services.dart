@@ -12,6 +12,8 @@ class ExpansesServices {
     Map<String, dynamic> body = {
       'expanse': expanse,
     };
+    print("JSON:");
+    print(jsonEncode(body));
     print(_urlPrefix);
     final http.Response res = await http.post(
       Uri.parse('$_urlPrefix/expanse/add'),
