@@ -46,55 +46,55 @@ class _HistoryOfExpensesPopupState extends State<HistoryOfExpensesPopup> {
           : ListView.builder(
               itemCount: widget.expansesProvider.expansesListHistory.length,
               itemBuilder: (context, outerIndex) {
-                final Map<String, dynamic> historyItem =
-                    widget.expansesProvider.expansesListHistory[outerIndex];
-                final expanses = historyItem['expanses'];
+                final Map<String, List<Expanses>> historyExpanses =
+                    widget.expansesProvider.expansesListHistory;
+                final yearMonths = historyExpanses.keys;
+                final expansesMap = historyExpanses.entries;
+                final yearMonth = expansesMap.elementAt(outerIndex).key;
+                final expanses = expansesMap.elementAt(outerIndex).value;
 
                 return Column(
                   children: [
-                    expanses.isEmpty
-                        ? const SizedBox()
-                        : Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  Text(
-                                    historyItem['monthYear'],
-                                    style:
-                                        Theme.of(context).textTheme.titleLarge,
-                                  ),
-                                  IconButton(
-                                    icon: const Icon(Icons.summarize),
-                                    tooltip: 'Summarize',
-                                    onPressed: () => Navigator.push(
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              yearMonth,
+                              style:
+                              Theme.of(context).textTheme.titleLarge,
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.summarize),
+                              tooltip: 'Summarize',
+                              onPressed: () => Navigator.push(
                                       
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (_) => SummarizeExpensesPopup(
-                                              expansesProvider:
-                                                  widget.expansesProvider,
-                                              date:
-                                                  "${historyItem['monthYear']}")),
-                                    ),
-                                  ),
-                                ],
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => SummarizeExpensesPopup(
+                                        expansesProvider:
+                                        widget.expansesProvider,
+                                        date:
+                                        yearMonth)),
                               ),
-                              ListView.builder(
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemCount: expanses.length,
-                                itemBuilder: (context, index) {
-                                  final Expanses expanse =
-                                      Expanses.fromMap(expanses[index]);
-                                  return ExpenseTile(
-                                    provider: widget.expansesProvider,
-                                    expanse: expanse,
-                                  );
-                                },
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
+                        ),
+                        ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: expanses.length,
+                          itemBuilder: (context, index) {
+                            final Expanses expanse = expanses.elementAt(index);
+                            return ExpenseTile(
+                              provider: widget.expansesProvider,
+                              expanse: expanse,
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ],
                 );
               },

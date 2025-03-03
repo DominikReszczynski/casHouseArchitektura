@@ -7,9 +7,9 @@ class ExpansesProvider extends ChangeNotifier {
 
   List<Expanses> get expansesListThisMounth => _expansesListThisMounth;
 
-  List<dynamic> _expansesListHistory = [];
+  Map<String, List<Expanses>> _expansesListHistory = {};
 
-  List<dynamic> get expansesListHistory => _expansesListHistory;
+  Map<String, List<Expanses>> get expansesListHistory => _expansesListHistory;
 
   Future<void> fetchExpensesForCurrentMonth() async {
     try {
@@ -37,36 +37,35 @@ class ExpansesProvider extends ChangeNotifier {
     }
   }
 
+  // if (result != null) {
+  //   result.map((item) =>
+  //       item['expanses'].map((expanses) => Expanses.fromJson(expanses)));
+
   Future<void> fetchExpansesByAuthorExcludingCurrentMonth() async {
     try {
-      final List<dynamic>? result = await ExpansesServices()
+      final Map<String, List<Expanses>> result = await ExpansesServices()
           .getAllExpansesByAuthorExcludingCurrentMonth();
-
-      if (result != null) {
-        result.map((item) =>
-            item['expanses'].map((expanses) => Expanses.fromJson(expanses)));
         _expansesListHistory = result;
         notifyListeners();
         print(expansesListHistory);
-      }
     } catch (e) {
       print("Error fetching expenses: $e");
     }
   }
 
-  Future<void> fetchExpenses() async {
-    try {
-      final List<dynamic>? result =
-          await ExpansesServices().getAllExpansesByAuthor();
-      if (result != null) {
-        _expansesListHistory = result;
-      }
-    } catch (e) {
-      print("Error fetching expenses: $e");
-    } finally {
-      notifyListeners();
-    }
-  }
+  // Future<void> fetchExpenses(String authorId) async {
+  //   try {
+  //     final Map<String, List<Expanses>>? result =
+  //         await ExpansesServices().getAllExpansesByAuthor(authorId);
+  //     if (result != null) {
+  //       _expansesListHistory = result;
+  //     }
+  //   } catch (e) {
+  //     print("Error fetching expenses: $e");
+  //   } finally {
+  //     notifyListeners();
+  //   }
+  // }
 
   Future<void> addExpense(Expanses newExpense) async {
     try {

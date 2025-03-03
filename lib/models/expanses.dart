@@ -14,6 +14,7 @@ class Expanses {
   String currency;
   String? placeOfPurchase;
   String category;
+  int? isSynced;
 
   @JsonKey(fromJson: _fromJsonDate, toJson: _toJsonDate)
   DateTime? createdAt;
@@ -30,6 +31,7 @@ class Expanses {
     required this.currency,
     this.placeOfPurchase,
     required this.category,
+    this.isSynced = 0, // Default: not synced
     this.createdAt,
     this.updatedAt,
   });
@@ -50,8 +52,9 @@ class Expanses {
       description: map['description'],
       amount: (map['amount'] as num).toDouble(),
       currency: map['currency'] ?? '',
-      placeOfPurchase: map['placeOfPurchase'],
+      placeOfPurchase: map['placeOfPurchase'] ?? '',
       category: map['category'] ?? '',
+      isSynced: map['isSynced'] ?? 0,
       createdAt: _fromJsonDate(map['createdAt']),
       updatedAt: _fromJsonDate(map['updatedAt']),
     );
