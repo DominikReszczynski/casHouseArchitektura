@@ -27,4 +27,5 @@ double parseDouble(String text) {
   return double.parse(parsedValue.toStringAsFixed(2));
 }
 
-String userId = "6459f367dff5d419539cbd41";
+bool user = false;
+String? userId;

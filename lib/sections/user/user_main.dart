@@ -1,3 +1,4 @@
+import 'package:cas_house/main_global.dart';
 import 'package:cas_house/providers/user_provider.dart';
 import 'package:cas_house/sections/user/user_section_header.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +34,13 @@ class _UserSectionMainState extends State<UserSectionMain> {
                   icon: const Icon(Icons.exposure_minus_1_outlined)),
             ],
           ),
+          ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  userId = null;
+                });
+              },
+              child: Text("Logout"))
         ],
       );
     });

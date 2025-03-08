@@ -1,6 +1,7 @@
 import 'package:cas_house/main_global.dart';
 import 'package:cas_house/providers/dasboard_provider.dart';
 import 'package:cas_house/providers/expanses_provider.dart';
+import 'package:cas_house/providers/login_provider.dart';
 import 'package:cas_house/providers/shopping_list_provider.dart';
 import 'package:cas_house/providers/user_provider.dart';
 import 'package:cas_house/sections/expenses/expenses_main.dart';
@@ -22,27 +23,40 @@ void main() {
         ChangeNotifierProvider(create: (_) => ExpansesProvider()),
         ChangeNotifierProvider(create: (_) => UserProvider()),
         ChangeNotifierProvider(create: (_) => ShoppingListProvider()),
+        ChangeNotifierProvider(create: (_) => LoginProvider()),
       ],
       child: const MyApp(),
     ),
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
   @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
-    bool user = false;
     return ValueListenableBuilder<ThemeMode>(
         valueListenable: chosenMode,
         builder: (context, themeMode, _) {
           return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            theme: ThemeData.light(),
-            darkTheme: ThemeData.dark(),
-            themeMode: themeMode,
-            home: Scaffold(body: user ? MainSections() : LoginSectionMain()),
-          );
+              debugShowCheckedModeBanner: false,
+              theme: ThemeData.light(),
+              darkTheme: ThemeData.dark(),
+              themeMode: themeMode,
+              home: Scaffold(
+                  body: userId != null
+                      ? const MainSections()
+                      : LoginSectionMain(
+                          loginUser: () {
+                            setState(() {
+                              userId = "6459f367dff5d419539cbd41";
+                            });
+                          },
+                        )));
         });
   }
 }
